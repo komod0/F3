@@ -1,0 +1,102 @@
+\subsection{Apéndice B: Propagación de errores sobre cuadrados mínimos}
+Dada la siguiente ecuación matricial:
+$$ A^t \cdot A \cdot \hat{x} = A^t \cdot b $$
+con
+$
+A = \begin{pmatrix} 
+1 & 1 \\
+2 & 1 \\
+\dots & \dots \\
+N & 1 \\
+\end{pmatrix}
+$, $
+b = \begin{pmatrix}
+V_0 \pm \Delta V\\
+V_1 \pm \Delta V\\
+\dots \\
+V_N \pm \Delta V\\
+\end{pmatrix}
+$ y $
+\hat{x} = \begin{pmatrix}
+m \\
+b
+\end{pmatrix}
+$ se quiere determinar el error cometido al calcular $m$ (notamos $\Delta m$) y el error cometido al calcular $b$ (notamos $\Delta b$). Para esto desarrollaremos la resolución de la ecuación matricial propagando el error de medición. Debe observarse que sólo la matriz $b$ contiene coeficientes con incertezas, dado que la matriz $A$ sólo contiene coeficientes que refieren a métricas discretas. 
+
+Calculamos $\hat{A} := A^t \cdot  A$ para una matriz de $N \times 2$
+$$ \hat{A} = 
+\begin{pmatrix} 
+1 & 2 & \dots & N \\
+1 & 1 & \dots & 1 \\
+\end{pmatrix}
+\cdot
+\begin{pmatrix} 
+1 & 1 \\
+2 & 1 \\
+\dots & \dots \\
+N & 1 \\
+\end{pmatrix}
+=
+\begin{pmatrix}
+\sum_{i=1}^{n}{i^2} & \frac{N \cdot (N+1)}{2} \\
+\frac{N \cdot (N+1)}{2} & N \\
+\end{pmatrix}
+$$
+
+Calculamos $\hat{b} := A^t \cdot b$
+$$ \hat{b} =
+\begin{pmatrix} 
+1 & 2 & \dots & N \\
+1 & 1 & \dots & 1 \\
+\end{pmatrix}
+\cdot
+\begin{pmatrix} 
+V_1 \pm \Delta V \\
+V_2 \pm \Delta V \\
+\dots \\
+V_N \pm \Delta V \\
+\end{pmatrix}
+=
+\begin{pmatrix}
+\sum_{i=1}^{N}{i \cdot V_i} \pm N \cdot \Delta V \\
+\sum_{i=1}^{N}{V_i} \pm N \cdot \Delta V \\
+\end{pmatrix}
+$$
+
+Triangulando $\hat{A}$ resolvemos el sistema de ecuaciones quedando
+
+$$
+\begin{pmatrix}
+\sum_{i=1}^{n}{i^2} & \frac{N \cdot (N+1)}{2} \\
+0 & N - \frac{N}{\sum_{i=1}^{n}{i^2}} \cdot \frac{N \cdot (N+1)}{2} \\
+\end{pmatrix}
+\cdot
+\begin{pmatrix}
+m \\
+b \\
+\end{pmatrix}
+=
+\begin{pmatrix}
+\sum_{i=1}^{N}{i \cdot V_i} \pm N \cdot \Delta V \\
+\sum_{i=1}^{N}{V_i} \pm N \cdot \Delta V \\
+\end{pmatrix}
+$$
+
+De aquí despejamos $m$ y $b$
+
+$$
+b = \frac{\sum_{i=1}^{N}{V_i} \pm N \cdot \Delta V}{N - \frac{(N \cdot (N+1))^2}{4 \sum_{i=1}^{n}{i^2}}}
+$$
+
+$$
+m = \frac{\sum_{i=1}^{N}{i \cdot V_i} \pm N \cdot \Delta V}{\sum_{i=1}^{N}{i^2}} - \frac{N \cdot (N+1)}{2} \cdot \frac{\sum_{i=1}^{N}{V_i} \pm N \cdot \Delta V}{N \cdot \sum_{i=1}^{N}{i^2} - (\frac{N \cdot (N+1)}{2})^2}
+$$
+
+Reescribiendo las expresiones y separando las incertezas nos queda
+
+$$
+\Delta b = \frac{\Delta V}{1 - \frac{N \cdot (N+1)^2}{4 \cdot \sum_{i=1}^{N}{i^2}}}
+$$
+$$
+\Delta m = N \cdot \Delta V \left(\frac{1}{\sum_{i=1}^{N}{i^2}} + \frac{N+1}{2\sum_{i=1}^{N}{i^2} - \frac{N \cdot (N+1)^2}{2}}\right)
+$$
